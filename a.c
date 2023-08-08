@@ -5,7 +5,7 @@
 int main(){    
     char input[1000];
     char input_tagliato[20];
-    int i=0;
+    int i=0,j=0,k=0,l=0,x=0;
     while(fgets(input, sizeof(input), stdin))
     {
         //printf("%s", input);
@@ -13,13 +13,36 @@ int main(){
             if(strcmp(input_tagliato,"aggiungi-stazione")==0)
             {
                 i++;
-                printf("%d \t",i);
+                //printf("aggiungi stazione %d \n",i);
             }
-                printf("%s", input);
+            if(strcmp(input_tagliato,"demolisci-stazione")==0)
+            {
+                j++;
+                //printf("Demolisci: %d \n",j);
+            }
+            if(strcmp(input_tagliato,"aggiungi-auto")==0)
+            {
+                k++;
+                //printf("aggiungi auto: %d \n",k);
+            }
+            if(strcmp(input_tagliato,"rottama-auto")==0)
+            {
+                l++;
+                //printf("rottama: %d \n",l);
+            }
+            if(strcmp(input_tagliato,"pianifica-percorso")==0)
+            {
+                x++;
+                //printf("pianifica: %d \n",x);
+            }
+                //printf("%s", input);
 
         }
-        
-    
-    
+    printf("aggiungi stazione %d \n",i);
+    printf("Demolisci: %d \n",j);
+    printf("aggiungi auto: %d \n",k);
+    printf("rottama: %d \n",l);
+    printf("pianifica: %d \n",x);
+
      return 0;
 }  
