@@ -6,14 +6,19 @@ int main(){
     char input[1000];
     char input_tagliato[20];
     int i=0,j=0,k=0,l=0,x=0;
+    int distanza=0, num_auto=0, autonomia=0;
     while(fgets(input, sizeof(input), stdin))
     {
-        //printf("%s", input);
+        printf("%s", input);
         sscanf(input,"%s",input_tagliato); //leggo l'input fino allo spazio (whitespace)
             if(strcmp(input_tagliato,"aggiungi-stazione")==0)
             {
                 i++;
                 //printf("aggiungi stazione %d \n",i);
+                sscanf(input,"%*s %d %d %d", &distanza, &num_auto, &autonomia); //%*s salta la stringa, uso & perchè puntatore
+                printf("Distanza %d \n", distanza);
+                printf("Numero auto %d \n", num_auto);
+                printf("Autonomia %d \n",autonomia);
             }
             if(strcmp(input_tagliato,"demolisci-stazione")==0)
             {
