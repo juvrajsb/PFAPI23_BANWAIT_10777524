@@ -26,6 +26,7 @@ void aggiungi_stazione(stazioni stazione[],int distanza, int num_auto, int auton
         printf("non aggiunta\n");
     }
     ///printf("%d %d \n", stazione[distanza].distanza,stazione[distanza].autonomia[d]);
+    
 }
 void demolisci_stazione(stazioni stazione[], int distanza, int num_auto)
 {
@@ -65,6 +66,22 @@ void rottama_auto(stazioni stazione[], int distanza, int num_auto, int autonomia
     stazione[distanza].num_auto-=1;
     printf("num auto %d \n", stazione[distanza].num_auto);
 }
+void percorso(stazioni stazione[], int distanza, int num_auto, int autonomia[], int partenza, int arrivo)
+{
+    int max, num_stazione=1;
+    while(num_stazione!=0)
+    {
+        if(stazione[distanza].distanza<arrivo)
+        {
+            max=stazione[distanza].distanza;
+        }
+    }
+    if(max==99)
+    {
+        printf("ciao");
+    }
+    
+}
 void analisi_input(char *input, stazioni stazione[])
 {
     char input_tagliato[20];
@@ -91,6 +108,7 @@ void analisi_input(char *input, stazioni stazione[])
                 //printf("Distanza %d \n", distanza);
                 //printf("Numero auto %d \n", num_auto);
                aggiungi_stazione(stazione,distanza, num_auto, autonomia);
+               
             }
             if(strcmp(input_tagliato,"demolisci-stazione")==0)
             {
@@ -119,19 +137,35 @@ void analisi_input(char *input, stazioni stazione[])
                 x++;
                 //printf("pianifica: %d \n",x);
                 sscanf(input, "%*s %d %d", &partenza, &arrivo);
+                //percorso(stazione,distanza,num_auto,autonomia,partenza,arrivo);
+                
+                for(int d=0;d<sizeof(stazione[distanza]);d++)
+                    {
+                        if(stazione[d].distanza!=0)
+                        {
+                            printf("%d ", stazione[d].distanza);
+                        }
+                            
+                    }   
+                    
+                    
+
             }
                 //printf("%s", input);
                 //printf("aggiungi stazione %d \n",i);
     
-
+            //printf("%d ", stazione[distanza].distanza);
 }
+
 int main(){    
     char input[1000];
     stazioni stazione[1000];
+    //int distanza=91;
     while(fgets(input, sizeof(input), stdin)!=NULL)
     {
         analisi_input(input, stazione);
     }
+    //printf("%d ", stazione[distanza].distanza);
     /*printf("Demolisci: %d \n",j);
     printf("aggiungi auto: %d \n",k);
     printf("rottama: %d \n",l);
