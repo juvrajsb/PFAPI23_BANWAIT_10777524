@@ -8,6 +8,7 @@ typedef struct {
         int num_auto;
         int autonomia[100];
 }stazioni;
+int station[1000];
 void aggiungi_stazione(stazioni stazione[],int distanza, int num_auto, int autonomia[])
 {
     if(stazione[distanza].distanza==0)
@@ -138,17 +139,34 @@ void analisi_input(char *input, stazioni stazione[])
                 //printf("pianifica: %d \n",x);
                 sscanf(input, "%*s %d %d", &partenza, &arrivo);
                 //percorso(stazione,distanza,num_auto,autonomia,partenza,arrivo);
-                
+                int o=0;
                 for(int d=0;d<sizeof(stazione[distanza]);d++)
                     {
                         if(stazione[d].distanza!=0)
                         {
-                            printf("%d ", stazione[d].distanza);
-                        }
+                            printf("\nstazione: %d ", stazione[d].distanza);
                             
+                            station[o]=stazione[d].distanza;
+                            o++;
+                            //printf("%d ", station[o]);
+                            printf("\nautonomia: ");
+                            for(int y=0;y<sizeof(stazione[distanza].autonomia);y++)
+                        {
+                            if(stazione[d].autonomia[y]!=0)
+                            {
+                                
+                                printf("%d ", stazione[d].autonomia[y]);
+                            }
+                        }
+                        }
+                        
+                        //printf("%d ", station[o]);
                     }   
-                    
-                    
+                for(int p=0; p<sizeof(station[o]);p++)
+                {
+                     //printf("%d ", station[p]);
+                }
+                //printf("\n %lu", sizeof(station[o]));
 
             }
                 //printf("%s", input);
