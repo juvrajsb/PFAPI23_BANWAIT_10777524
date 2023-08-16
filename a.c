@@ -158,21 +158,23 @@ void trova_max_autonomia()
         veic=veic->next;
         }
         staz->somma= staz->distanza + max;
-        printf("staz: %d somma: %d", staz->distanza, staz->somma);
+        //printf("staz: %d somma: %d", staz->distanza, staz->somma);
         staz=staz->next;
     }
 }
 void percorso(int partenza, int arrivo)
 {
     int  min=99999999;
-    struct stazioni *staz = stazione;
+    
     if(partenza==arrivo)
     {
+        printf("%d", partenza);
         return;
     }
+    struct stazioni *staz = stazione;
     if(staz->somma!=0)
     {
-        printf("%d ",staz->somma);
+        //printf("%d ",staz->somma);
     }
     else
     {
@@ -180,48 +182,58 @@ void percorso(int partenza, int arrivo)
     }
     while (staz!=NULL)
     {
-        if(staz->somma>=arrivo && staz->distanza <arrivo && staz->distanza>=partenza)
-            {
-                if(staz->distanza < min)
+        if(staz->distanza>=partenza)
+        {
+            if(staz->somma>=arrivo && staz->distanza <arrivo)
                 {
-                    min= staz->distanza;
+                    if(staz->distanza < min)
+                    {
+                        min= staz->distanza;
+                        
+                    }
                     staz->strada=min;
-                }
-                printf("\n min: %d \n",min);
-                    //rottama_auto(min, max);
-                    //per->next=perco;
-                    //perco=per;
+                    
+                    //printf("\n min: %d \n",min);
+                        //rottama_auto(min, max);
+                        //per->next=perco;
+                        //perco=per;
 
-                /*{
-                    struct percorso *per = (struct percorso *)malloc(sizeof(struct percorso));
-                    //per=;
-                    
-                    per->percorsi=staz->distanza;
-                    while (per!=NULL)
-                    {
-                        if(per->percorsi<min)
+                    /*{
+                        struct percorso *per = (struct percorso *)malloc(sizeof(struct percorso));
+                        //per=;
+                        
+                        per->percorsi=staz->distanza;
+                        while (per!=NULL)
                         {
-                            min= per->percorsi;
-                            
-                            per->strada=min;
+                            if(per->percorsi<min)
+                            {
+                                min= per->percorsi;
+                                
+                                per->strada=min;
+                            }
+                            per=per->next;
                         }
-                        per=per->next;
-                    }
-                    printf("\n min: %d \n",min);
-                    rottama_auto(min, max);
-                    //per->next=perco;
-                    //perco=per;
-                    if (min>=partenza)
-                    {
-                        percorso(partenza,min);
-                    }
-                    
-                }*/
+                        printf("\n min: %d \n",min);
+                        rottama_auto(min, max);
+                        //per->next=perco;
+                        //perco=per;
+                        if (min>=partenza)
+                        {
+                            percorso(partenza,min);
+                        }
+                        
+                    }*/
+            }
+        }
+        else
+        {
+            printf("%d", partenza);
+            return;
         }   
-        if(staz->somma==0)
+        /*if(staz->somma==0)
         {
             return;
-        }
+        }*/
         staz=staz->next;   
     }
     staz=stazione;
@@ -229,14 +241,21 @@ void percorso(int partenza, int arrivo)
     while (staz!=NULL)
     {
         //printf("%d ", min );
-        if (min>=partenza)
+        if(min==99999999)
+        {
+            printf("nessun percorso\n");
+            return;
+        }
+        if (min>partenza)
             {
                 percorso(partenza,min);
             }
-        else {return;}
+        /*else {
+                //printf("%d", partenza);
+                return;
+            }*/
         staz=staz->next;
     }
-    printf("nessun percorso\n");
     
 }
 
@@ -299,5 +318,7 @@ int main(){
         printf("%d ",staz->strada);
     staz=staz->next;
     }
+    free(staz);
      return 0;
-}  
+
+}
