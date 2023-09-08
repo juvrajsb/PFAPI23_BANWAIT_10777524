@@ -155,7 +155,7 @@ void rottama_auto(int distanza, int autonomia)
     printf("non rottamata\n");
 }
 
-void calculate_station_sums() {
+void somma() {
     struct stazione *staz = stazione;
     while (staz != NULL) {
         int max = 0;
@@ -168,7 +168,7 @@ void calculate_station_sums() {
         staz = staz->next;
     }
 }
-void calculate_station_sums1() {
+void somma1() {
     struct stazione *staz = stazione;
     while (staz != NULL) {
         int max = 0;
@@ -181,10 +181,10 @@ void calculate_station_sums1() {
         staz = staz->next;
     }
 }
+
 void percorso(int partenza, int arrivo,int arr)
 {
     
-    calculate_station_sums();
     struct stazione *staz = stazione;
     while (staz!=NULL)
     {
@@ -251,11 +251,14 @@ void percorso(int partenza, int arrivo,int arr)
     }
 }
 
-
+void dirpercorso(int partenza, int arrivo)
+{
+    somma();
+    percorso(partenza, arrivo, arrivo);
+}
 int percorso2(int partenza, int arrivo, int conta)
 {
 
-    
     struct reverse *nuov=NULL;
     struct stazione *staz = stazione;
     while(staz!=NULL)
@@ -283,17 +286,25 @@ int percorso2(int partenza, int arrivo, int conta)
             {
                     
                     //printf("counts %d",count);
+                    struct reverse *newn;
+                    while (nuov != NULL) {
+                        //printf("nuov: %d\n",nuov->distanza);
+                        newn = nuov;
+                        nuov = nuov->next;
+                        free(newn);
+                    }
                     conta=percorso2(partenza,nuo->distanza, conta+1);
                     return conta;
             }
         }    
         nuo=nuo->next;   
     }
-   struct reverse *temp;
+   struct reverse *newn;
     while (nuov != NULL) {
-        temp = nuov;
+        //printf("nuov: %d\n",nuov->distanza);
+        newn = nuov;
         nuov = nuov->next;
-        free(temp);
+        free(newn);
     }
 
 //printf("conta1: %d\n",conta);
@@ -301,12 +312,12 @@ return conta;
 }
 
 void revpercorso(int partenza, int arrivo) {
-    calculate_station_sums1();
+    somma1();
     
     struct stazione *staz = stazione;
     int min = 10000, stazion=0;
     
-    // Iterate over stazione and perform calculations
+
     while (staz != NULL) {
         //printf("al: %d %d\n", staz->distanza, staz->somma);
         if (staz->distanza < partenza && staz->distanza >= arrivo) {
@@ -377,21 +388,7 @@ while(filtr!=NULL)
     free(temp);
 }
 printf("%d\n",arrivo);
-   /* staz = stazione;
-    
-    // Print and process the stations with minimum somma
-    while (staz != NULL) {
-        if (staz->num_tappe == min) {
-            printf("%d ", staz->distanza);
-            min = min - 1;
-        } else if (staz->distanza <= partenza && staz->distanza > arrivo && staz->somma == 0 && staz->distanza != arrivo) {
-            printf("nessun percorso\n");
-            return;
-        }
-        staz = staz->next;
-    }
-    */
-    //printf("%d\n", arrivo);
+
 }
 
 void analisi_input(char *input)
@@ -439,12 +436,13 @@ void analisi_input(char *input)
                 }
                 else
                 {
-                    percorso(partenza,arrivo, arrivo);
+                    dirpercorso(partenza,arrivo);
                 }
                 //printf("%d ",arrivo);
-                return;
+                
             }
             free(autonomie);
+            return;
 }
 
 int main() {
@@ -454,7 +452,7 @@ int main() {
         analisi_input(input);
     }
 
-    // Free memory for veicoli arrays within each station
+
     struct stazione *current = stazione;
     while (current != NULL) {
         free(current->veicoli);
