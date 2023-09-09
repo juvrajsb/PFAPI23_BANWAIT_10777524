@@ -207,7 +207,7 @@ void percorso(int partenza, int arrivo,int arr)
         }  
         /*if(staz->somma==0)
         {
-            break;
+            return;
         }*/
         staz=staz->next;   
     }
@@ -218,16 +218,11 @@ void percorso(int partenza, int arrivo,int arr)
         while(per!=NULL)
         {
             printf("%d ", per->staz->distanza);
-            per=per->next;
-        }
-        printf("%d\n", arr);
-        per=perco;
-        while(per!=NULL)
-        {
-            struct percorso *temp=per;
-            per=per->next;
+            struct percorso *temp = per;
+            per = per->next;
             free(temp);
         }
+        printf("%d\n", arr);
         perco=NULL;
         return;
     }
