@@ -5,22 +5,21 @@ struct veicolo
 {
     int autonomia;
 };
-
-struct stazione
+struct stazioni
 {
     int distanza;
     int num_auto;
     int somma;
     int num_tappe;
     struct veicolo *veicoli;
-    struct stazione *next;
+    struct stazioni *next;
 };
 
 struct percorso
 {
     int strada;
     int num_staz;
-    struct stazione *staz;
+    struct stazioni *staz;
     struct percorso *next;
     struct percorso *prev;
 };
@@ -31,13 +30,13 @@ struct reverse
     struct reverse *next;
 };
 
-struct stazione *stazione = NULL;
+struct stazioni *stazione = NULL;
 struct percorso *perco = NULL;
 struct reverse *rev=NULL;
 
 void aggiungi_stazione(int distanza, int num_auto, int *autonomie)
 {
-    struct stazione *questa = stazione;
+    struct stazioni *questa = stazione;
     while (questa != NULL)
     {
         if (questa->distanza == distanza)
@@ -47,7 +46,7 @@ void aggiungi_stazione(int distanza, int num_auto, int *autonomie)
         }
         questa = questa->next;
     }
-    struct stazione *staz = (struct stazione *)malloc(sizeof(struct stazione));
+    struct stazioni *staz = (struct stazioni *)malloc(sizeof(struct stazioni));
     staz->distanza = distanza;
     staz->num_auto = num_auto;
     staz->veicoli = (struct veicolo *)malloc(num_auto * sizeof(struct veicolo));
@@ -60,7 +59,7 @@ void aggiungi_stazione(int distanza, int num_auto, int *autonomie)
     }
     else
     {
-        struct stazione *stazi = stazione;
+        struct stazioni *stazi = stazione;
         while (stazi->next != NULL && stazi->next->distanza < distanza)
         {
             stazi = stazi->next;
@@ -78,8 +77,8 @@ void aggiungi_stazione(int distanza, int num_auto, int *autonomie)
 
 void demolisci_stazione(int distanza)
 {
-    struct stazione *prev = NULL;
-    struct stazione *staz = stazione;
+    struct stazioni *prev = NULL;
+    struct stazioni *staz = stazione;
     while (staz != NULL)
     {
         if (staz->distanza == distanza)
@@ -105,7 +104,7 @@ void demolisci_stazione(int distanza)
 
 void aggiungi_auto(int distanza, int num_auto, int autonomia)
 {
-    struct stazione *staz = stazione;
+    struct stazioni *staz = stazione;
     while (staz != NULL)
     {
         if (staz->distanza == distanza)
@@ -123,7 +122,7 @@ void aggiungi_auto(int distanza, int num_auto, int autonomia)
 
 void rottama_auto(int distanza, int autonomia)
 {
-    struct stazione *staz = stazione;
+    struct stazioni *staz = stazione;
     while (staz != NULL)
     {
         if (staz->distanza == distanza)
@@ -156,7 +155,7 @@ void rottama_auto(int distanza, int autonomia)
 }
 
 void somma() {
-    struct stazione *staz = stazione;
+    struct stazioni *staz = stazione;
     while (staz != NULL) {
         int max = 0;
         for (int i = 0; i < staz->num_auto; i++) {
@@ -169,7 +168,7 @@ void somma() {
     }
 }
 void somma1() {
-    struct stazione *staz = stazione;
+    struct stazioni *staz = stazione;
     while (staz != NULL) {
         int max = 0;
         for (int i = 0; i < staz->num_auto; i++) {
@@ -184,13 +183,11 @@ void somma1() {
 
 void percorso(int partenza, int arrivo,int arr)
 {
-    struct stazione *staz = stazione;
+    struct stazioni *staz = stazione;
     while (staz!=NULL)
     {
-        //printf("%d \n", staz->distanza);
         if(staz->distanza>=partenza)
         {   
-            //printf("a:%d\n",staz->distanza);
             if(staz->somma>=arrivo && staz->distanza <arrivo)
             {
                 
@@ -203,7 +200,6 @@ void percorso(int partenza, int arrivo,int arr)
                         perco->prev=per;
                     }
                     perco = per;
-                    //printf("%d \n",staz->distanza);
                     percorso(partenza,staz->distanza, arr);
                     return; 
             }
@@ -261,23 +257,16 @@ int percorso2(int partenza, int arrivo, int conta)
 
     while (nuo!=NULL)
     {
-        //printf("s: %d \n",nuo->distanza);
         if(nuo->distanza<=partenza)
         {   
-            //printf("test: %d somma: %d\n", nuo->distanza,nuo->somma);
             if(nuo->somma<=arrivo && nuo->distanza>arrivo)
             {
-                    
-                    //printf("counts %d",count);
                     conta=percorso2(partenza,nuo->distanza, conta+1);
                     return conta;
             }
         }    
         nuo=nuo->next;   
     }
-   
-
-//printf("conta1: %d\n",conta);
 return conta;
 }
 int percorso3(int partenza, int arrivo, int arr)
@@ -286,14 +275,10 @@ int percorso3(int partenza, int arrivo, int arr)
     int ness=0;
     while (nuo!=NULL)
     {
-        //printf("s: %d \n",nuo->distanza);
         if(nuo->distanza<=partenza)
         {   
-            //printf("test: %d somma: %d\n", nuo->distanza,nuo->somma);
             if(nuo->somma<=arrivo && nuo->distanza>arrivo)
             {
-                    
-                    //printf("counts %d",count);
                     ness=percorso3(partenza,nuo->distanza, arr);
                     if(ness==1)
                     {
@@ -318,10 +303,10 @@ int percorso3(int partenza, int arrivo, int arr)
 void revpercorso(int partenza, int arrivo) {
     somma1();
     struct reverse *nuov=NULL;
-    struct stazione *staz = stazione;
+    struct stazioni *staz = stazione;
     while(staz!=NULL)
     {
-        //printf("s: %d %d\n", staz->somma, staz->distanza);
+
         struct reverse *newn = (struct reverse *)malloc(sizeof(struct reverse));
         newn->distanza = staz->distanza;
         newn->somma = staz->somma;
@@ -336,31 +321,23 @@ void revpercorso(int partenza, int arrivo) {
     a=percorso3(partenza,arrivo,arrivo);
     if(a==1)
     {
-        //printf("nessun percorso\n");
         return;
     }
 
-    //struct stazione *staz = stazione;
     staz=stazione;
     int min = 10000, stazion=0;
     
 
     while (staz != NULL) {
-        //printf("al: %d %d\n", staz->distanza, staz->somma);
         if (staz->distanza < partenza && staz->distanza >= arrivo) {
-            //printf("b: %d\n", staz->distanza);
             int conta = 0;
             conta = percorso2(partenza, staz->distanza, conta); 
-            //printf("c: %d\n", conta);
             staz->num_tappe = conta;
-            //printf("k: %d %d %d\n", staz->distanza, staz->num_tappe, staz->somma);
             if (staz->somma <= arrivo) {
-                //printf("t: %d %d\n", staz->distanza, staz->num_tappe);
                 
                 if (staz->num_tappe < min) {
                     min = staz->num_tappe;
                     stazion=staz->distanza;
-                    //printf("min: %d %d\n", min, staz->distanza);
                 }
             }
   
@@ -371,52 +348,46 @@ void revpercorso(int partenza, int arrivo) {
         }
         else
         {
-            staz->num_tappe = 10000;
+            staz->num_tappe = -3;
         }
         staz = staz->next;
     }
     staz = stazione;
     
-    struct stazione *filtr = NULL;
+    struct stazioni *filtr = NULL;
 
-    struct stazione *temp = (struct stazione *)malloc(sizeof(struct stazione));
+    struct stazioni *temp = (struct stazioni *)malloc(sizeof(struct stazioni));
     temp->distanza = stazion;
     temp->next = filtr;
     filtr = temp;
 
     min=min-1;
-    //struct stazione *stack=NULL;
     while (staz!=NULL)
     {
-        //printf("staz: %d %d\n", staz->distanza, staz->num_tappe);
         if(staz->num_tappe==min && staz->somma<=stazion)
         {
-            //printf("d: %d %d %d\n",staz->distanza,staz->somma, staz->num_tappe);
             if(min==0)
             {
-                struct stazione *temp = (struct stazione *)malloc(sizeof(struct stazione));
+                struct stazioni *temp = (struct stazioni *)malloc(sizeof(struct stazioni));
                 temp->distanza = partenza;
                 temp->next = filtr;
                 filtr = temp;
                 break;
             }
             
-            struct stazione *temp = (struct stazione *)malloc(sizeof(struct stazione));
+            struct stazioni *temp = (struct stazioni *)malloc(sizeof(struct stazioni));
             temp->distanza = staz->distanza;
             temp->next = filtr;
             filtr = temp;
             stazion=staz->distanza;
             min=min-1;
-            //printf("min: %d\n",min);
             
         }
         else if((staz->distanza<=partenza && staz->distanza>arrivo && staz->num_tappe==0 )|| min==-1 || min==-2)
         {
-            //&& staz->distanza!=arrivo 
             while(filtr!=NULL)
             {
-                //printf("%d ",filtr->distanza);
-                struct stazione *temp=filtr;
+                struct stazioni *temp=filtr;
                 filtr=filtr->next;
                 free(temp);
             }
@@ -435,7 +406,7 @@ void revpercorso(int partenza, int arrivo) {
 while(filtr!=NULL)
 {
     printf("%d ",filtr->distanza);
-    struct stazione *temp=filtr;
+    struct stazioni *temp=filtr;
     filtr=filtr->next;
     free(temp);
 }
@@ -465,23 +436,26 @@ void analisi_input(char *input)
                     input = strchr(input + 1, ' ');
                 }
                aggiungi_stazione(distanza, num_auto, autonomie);
-
+                return;
             }
             else if(strcmp(input_tagliato,"demolisci-stazione")==0)
             {
                 sscanf(input, "%*s %d", &distanza);
                 demolisci_stazione(distanza);
+                return;
             }
             else if(strcmp(input_tagliato,"aggiungi-auto")==0)
             {
                 sscanf(input,"%*s %d %d", &distanza, &autonomia);
                 aggiungi_auto(distanza, 1, autonomia);
+                return;
             }
             
             else if(strcmp(input_tagliato,"rottama-auto")==0)
             {
                 sscanf(input,"%*s %d %d", &distanza, &autonomia);
                 rottama_auto(distanza, autonomia);
+                return;
             }
             
             else if(strcmp(input_tagliato,"pianifica-percorso")==0)
@@ -489,15 +463,13 @@ void analisi_input(char *input)
                 sscanf(input, "%*s %d %d", &partenza, &arrivo);
                 if(partenza>arrivo)
                 {
-                    //percorso1(partenza,arrivo,arrivo,arrivo);
                     revpercorso(partenza,arrivo);
                 }
                 else
                 {
                     dirpercorso(partenza,arrivo);
                 }
-                //printf("%d ",arrivo);
-                
+                return;
             }
             free(autonomie);
             return;
@@ -508,12 +480,12 @@ int main() {
     while (fgets(input, sizeof(input), stdin) != NULL) {
         analisi_input(input);
     }
-    struct stazione *current = stazione;
+    struct stazioni *current = stazione;
     while (current != NULL) {
         free(current->veicoli);
-        struct stazione *temp = current;
+        struct stazioni *temp = current;
         current = current->next;
         free(temp);
     }
-    exit(0);
+    return 0;
 }
