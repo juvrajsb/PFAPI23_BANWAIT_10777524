@@ -184,7 +184,6 @@ void somma1() {
 
 void percorso(int partenza, int arrivo,int arr)
 {
-    
     struct stazione *staz = stazione;
     while (staz!=NULL)
     {
@@ -458,8 +457,7 @@ void analisi_input(char *input)
     int autonomia=0;
         sscanf(input,"%s", input_tagliato); //leggo l'input fino allo spazio (whitespace)
             if(strcmp(input_tagliato,"aggiungi-stazione")==0)
-            {
-                // Parse station data
+            { 
                 sscanf(input, "%*s %d %d", &distanza, &num_auto);
                 autonomie = (int*)malloc(num_auto * sizeof(int));
                 for (int d = 0; d < num_auto; d++) {
@@ -504,15 +502,12 @@ void analisi_input(char *input)
             free(autonomie);
             return;
 }
-
 int main() {
     char input[10000];
 
     while (fgets(input, sizeof(input), stdin) != NULL) {
         analisi_input(input);
     }
-
-
     struct stazione *current = stazione;
     while (current != NULL) {
         free(current->veicoli);
@@ -520,6 +515,5 @@ int main() {
         current = current->next;
         free(temp);
     }
-
-    return 0;
+    exit(0);
 }
