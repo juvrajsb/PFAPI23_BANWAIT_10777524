@@ -281,7 +281,41 @@ int percorso2(int partenza, int arrivo, int conta)
 //printf("conta1: %d\n",conta);
 return conta;
 }
+int percorso3(int partenza, int arrivo, int arr)
+{   
+    struct reverse *nuo = rev;
+    int ness=0;
+    while (nuo!=NULL)
+    {
+        //printf("s: %d \n",nuo->distanza);
+        if(nuo->distanza<=partenza)
+        {   
+            //printf("test: %d somma: %d\n", nuo->distanza,nuo->somma);
+            if(nuo->somma<=arrivo && nuo->distanza>arrivo)
+            {
+                    
+                    //printf("counts %d",count);
+                    ness=percorso3(partenza,nuo->distanza, arr);
+                    if(ness==1)
+                    {
+                        return 1;
+                    }
+                    return 0;
+            }
+        }    
+        nuo=nuo->next;   
+    }
+   if(partenza==arrivo && arrivo!=arr)
+    {
+        return 0;
+    }
+    else
+    {
+        printf("nessun percorso\n");
+        return 1;
+    }
 
+}
 void revpercorso(int partenza, int arrivo) {
     somma1();
     struct reverse *nuov=NULL;
@@ -299,6 +333,14 @@ void revpercorso(int partenza, int arrivo) {
     }
 
     rev=nuov;
+    int a=0;
+    a=percorso3(partenza,arrivo,arrivo);
+    if(a==1)
+    {
+        //printf("nessun percorso\n");
+        return;
+    }
+
     //struct stazione *staz = stazione;
     staz=stazione;
     int min = 10000, stazion=0;
@@ -312,7 +354,7 @@ void revpercorso(int partenza, int arrivo) {
             conta = percorso2(partenza, staz->distanza, conta); 
             //printf("c: %d\n", conta);
             staz->num_tappe = conta;
-            //printf("d: %d %d\n", staz->distanza, staz->num_tappe);
+            //printf("k: %d %d %d\n", staz->distanza, staz->num_tappe, staz->somma);
             if (staz->somma <= arrivo) {
                 //printf("t: %d %d\n", staz->distanza, staz->num_tappe);
                 
@@ -322,7 +364,15 @@ void revpercorso(int partenza, int arrivo) {
                     //printf("min: %d %d\n", min, staz->distanza);
                 }
             }
-            
+  
+        }
+        else if (staz->distanza == partenza)
+        {
+            staz->num_tappe = 0;
+        }
+        else
+        {
+            staz->num_tappe = 10000;
         }
         staz = staz->next;
     }
@@ -340,29 +390,46 @@ void revpercorso(int partenza, int arrivo) {
     while (staz!=NULL)
     {
         //printf("staz: %d %d\n", staz->distanza, staz->num_tappe);
-
-        if(staz->num_tappe==min)
+        if(staz->num_tappe==min && staz->somma<=stazion)
         {
-            struct stazione *temp = (struct stazione *)malloc(sizeof(struct stazione));
+            //printf("d: %d %d %d\n",staz->distanza,staz->somma, staz->num_tappe);
             if(min==0)
             {
+                struct stazione *temp = (struct stazione *)malloc(sizeof(struct stazione));
                 temp->distanza = partenza;
                 temp->next = filtr;
                 filtr = temp;
                 break;
             }
-            //printf("d: %d %d\n",staz->distanza, staz->num_tappe);
             
+            struct stazione *temp = (struct stazione *)malloc(sizeof(struct stazione));
             temp->distanza = staz->distanza;
             temp->next = filtr;
             filtr = temp;
-
+            stazion=staz->distanza;
             min=min-1;
+            //printf("min: %d\n",min);
+            
         }
-        else if(staz->distanza<=partenza && staz->distanza>arrivo && staz->num_tappe==0 && staz->distanza!=arrivo)
+        else if((staz->distanza<=partenza && staz->distanza>arrivo && staz->num_tappe==0 )|| min==-1 || min==-2)
         {
+            //&& staz->distanza!=arrivo 
+            while(filtr!=NULL)
+            {
+                //printf("%d ",filtr->distanza);
+                struct stazione *temp=filtr;
+                filtr=filtr->next;
+                free(temp);
+            }
+
+            struct reverse *newn;
+                while (nuov != NULL) {
+                    newn = nuov;
+                    nuov = nuov->next;
+                    free(newn);
+                }
             printf("nessun percorso\n");
-            break;
+            return;
         }
         staz=staz->next;
     }
