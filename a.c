@@ -321,13 +321,18 @@ void revpercorso(int partenza, int arrivo) {
     a=percorso3(partenza,arrivo,arrivo);
     if(a==1)
     {
+        struct reverse *newn;
+        while (nuov != NULL) {
+            newn = nuov;
+            nuov = nuov->next;
+            free(newn);
+        }
         return;
     }
 
     staz=stazione;
     int min = 10000, stazion=0;
     
-
     while (staz != NULL) {
         if (staz->distanza < partenza && staz->distanza >= arrivo) {
             int conta = 0;
@@ -436,7 +441,7 @@ void analisi_input(char *input)
                     input = strchr(input + 1, ' ');
                 }
                aggiungi_stazione(distanza, num_auto, autonomie);
-                return;
+                
             }
             else if(strcmp(input_tagliato,"demolisci-stazione")==0)
             {
