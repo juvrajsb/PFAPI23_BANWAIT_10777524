@@ -102,7 +102,7 @@ void demolisci_stazione(int distanza)
     printf("non demolita\n");
 }
 
-void aggiungi_auto(int distanza, int num_auto, int autonomia)
+void aggiungi_auto(int distanza, int autonomia)
 {
     struct stazioni *staz = stazione;
     while (staz != NULL)
@@ -159,6 +159,7 @@ void somma() {
     while (staz != NULL) {
         int max = 0;
         for (int i = 0; i < staz->num_auto; i++) {
+            //printf("%d \n", staz->veicoli[i].autonomia);
             if (staz->veicoli[i].autonomia > max) {
                 max = staz->veicoli[i].autonomia;
             }
@@ -204,10 +205,10 @@ void percorso(int partenza, int arrivo,int arr)
                     return; 
             }
         }  
-        if(staz->somma==0)
+        /*if(staz->somma==0)
         {
-            return;
-        }
+            break;
+        }*/
         staz=staz->next;   
     }
 
@@ -440,7 +441,7 @@ void analisi_input(char *input)
                     sscanf(input, "%*s %*d %*d %d", &autonomie[d]);
                     input = strchr(input + 1, ' ');
                 }
-               aggiungi_stazione(distanza, num_auto, autonomie);
+               aggiungi_stazione(distanza,num_auto, autonomie);
                 
             }
             else if(strcmp(input_tagliato,"demolisci-stazione")==0)
@@ -452,7 +453,7 @@ void analisi_input(char *input)
             else if(strcmp(input_tagliato,"aggiungi-auto")==0)
             {
                 sscanf(input,"%*s %d %d", &distanza, &autonomia);
-                aggiungi_auto(distanza, 1, autonomia);
+                aggiungi_auto(distanza, autonomia);
                 return;
             }
             
@@ -463,7 +464,7 @@ void analisi_input(char *input)
                 return;
             }
             
-            else if(strcmp(input_tagliato,"pianifica-percorso")==0)
+            if(strcmp(input_tagliato,"pianifica-percorso")==0)
             {
                 sscanf(input, "%*s %d %d", &partenza, &arrivo);
                 if(partenza>arrivo)
